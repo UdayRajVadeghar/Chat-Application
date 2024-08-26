@@ -1,11 +1,19 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Image as ImageIcon } from "lucide-react";
-import { useState } from "react";
+import {
+  Image as ImageIcon,
+  Loader,
+  SendHorizonalIcon,
+  ThumbsUp,
+} from "lucide-react";
+import { useRef, useState } from "react";
+import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import EmojiPicker from "./EmojiPicker";
 
 const ChatBottomBar = () => {
   const [message, setMessage] = useState("");
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const isPending = false;
 
   return (
     <div className="p-2 flex justify-between w-full items-center gap-2">
@@ -39,10 +47,33 @@ const ChatBottomBar = () => {
             <EmojiPicker
               onChange={(emoji) => {
                 setMessage(message + emoji);
+                if (textAreaRef.current) {
+                  textAreaRef.current.focus();
+                }
               }}
             />
           </div>
         </motion.div>
+        {message.trim() ? (
+          <Button
+            className="h-9 w-9 dark:bg-muted dark:text-muted-foreground dark:hover:bg:muted dark:hover:text-white shrink-0"
+            variant={"ghost"}
+            size={"icon"}
+          >
+            <SendHorizonalIcon size={20} className="text-muted-foreground" />
+          </Button>
+        ) : (
+          <Button
+            className="h-9 w-9 dark:bg-muted dark:text-muted-foreground dark:hover:bg:muted dark:hover:text-white shrink-0"
+            variant={"ghost"}
+            size={"icon"}
+          >
+            {!isPending && (
+              <ThumbsUp size={20} className="text-muted-foreground" />
+            )}
+            {isPending && <Loader size={20} className="animate-spin" />}
+          </Button>
+        )}
       </AnimatePresence>
     </div>
   );
