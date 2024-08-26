@@ -38,7 +38,9 @@ const MessageList = () => {
                 </Avatar>
               )}
               {message.messageType === "text" ? (
-                <span className="bg-accent p-3 rounded-md max-w-xs"></span>
+                <span className="bg-accent p-3 rounded-md max-w-xs">
+                  {message.content}
+                </span>
               ) : (
                 <img
                   src={message.content}
