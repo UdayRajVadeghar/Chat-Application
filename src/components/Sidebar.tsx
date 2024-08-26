@@ -1,5 +1,7 @@
+import { cn } from "@/lib/utils";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { LogOut } from "lucide-react";
 import { USERS } from "../db/dummy";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -51,11 +53,54 @@ const Sidebar = ({ isCollapsed }: SidebarProps) => {
               </Tooltip>
             </TooltipProvider>
           ) : (
-            // Later Today
-            <Button key={idx} className=""></Button>
+            <Button
+              key={idx}
+              variant={"gray"}
+              size="xl"
+              className={cn(
+                "w-full justify-start gap-4 my-1",
+                selectedUser?.email === user.email &&
+                  "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white shrink"
+              )}
+            >
+              <Avatar className="flex justify-center items-center">
+                <AvatarImage
+                  src={user.image || "/user-placeholder.png"}
+                  alt={"User image"}
+                  className="w-10 h-10"
+                />
+                <AvatarFallback>{user.name[0]}</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col max-w-28">
+                <span>{user.name}</span>
+              </div>
+            </Button>
           )
         )}
       </ScrollArea>
+      {/*----------------------------------------------------------------*/}
+      {/*Login out sections*/}
+
+      <div className="mt-auto">
+        <div className="flex justify-between items-center gap-2 md:px-6 py-2">
+          {!isCollapsed && (
+            <div className="hidden md:flex gap-2 items-center ">
+              <Avatar className="flex justify-center items-center">
+                <AvatarImage
+                  src={"/user-placeholder.png"}
+                  alt="avatar"
+                  referrerPolicy="no-referrer"
+                  className="w-8 h-8 border-2 border-white rounded-full"
+                />
+              </Avatar>
+              <p className="font-bold">{"John Doe"}</p>
+            </div>
+          )}
+          <div className="flex">
+            <LogOut size={22}></LogOut>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
