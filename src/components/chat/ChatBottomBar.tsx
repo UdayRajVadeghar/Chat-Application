@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Image as ImageIcon } from "lucide-react";
 import { useState } from "react";
 import { Textarea } from "../ui/textarea";
+import EmojiPicker from "./EmojiPicker";
 
 const ChatBottomBar = () => {
   const [message, setMessage] = useState("");
@@ -34,6 +35,13 @@ const ChatBottomBar = () => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
+          <div className="absolute right-2 bottom-0.5 ">
+            <EmojiPicker
+              onChange={(emoji) => {
+                setMessage(message + emoji);
+              }}
+            />
+          </div>
         </motion.div>
       </AnimatePresence>
     </div>
