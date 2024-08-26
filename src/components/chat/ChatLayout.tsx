@@ -9,6 +9,7 @@ import {
 } from "../ui/resizable";
 
 import Sidebar from "../Sidebar";
+import MessageContainer from "./MessageContainer";
 
 interface ChatLayoutProps {
   defaultLayout: number[] | undefined;
@@ -59,11 +60,11 @@ const ChatLayout = ({ defaultLayout = [320, 480] }: ChatLayoutProps) => {
           document.cookie = `react-resizeable-panels:collapsed = false`;
         }}
       >
-        <Sidebar />
+        <Sidebar isCollapsed={isCollapsed} />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-        <div className="flex justify-center items-center h-full w-full px-10">
+        {/* <div className="flex justify-center items-center h-full w-full px-10">
           <div className="flex flex-col justify-center items-center gap-4">
             <img
               src="/logo.png"
@@ -74,7 +75,8 @@ const ChatLayout = ({ defaultLayout = [320, 480] }: ChatLayoutProps) => {
               Click on a chat to view the messages
             </p>
           </div>
-        </div>
+        </div> */}
+        <MessageContainer></MessageContainer>
       </ResizablePanel>
     </ResizablePanelGroup>
   );
