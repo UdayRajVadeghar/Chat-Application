@@ -7,7 +7,7 @@ export default async function Home() {
   const layout = cookies().get("react-resizable-panels:layout");
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
 
-  await redis.set("foo", "bar");
+  //await redis.set("foo", "bar");
 
   const data = await redis.get("foo");
 
