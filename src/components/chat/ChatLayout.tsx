@@ -8,14 +8,16 @@ import {
   ResizablePanelGroup,
 } from "../ui/resizable";
 
+import { User } from "@/db/dummy";
 import Sidebar from "../Sidebar";
 import MessageContainer from "./MessageContainer";
 
 interface ChatLayoutProps {
   defaultLayout: number[] | undefined;
+  users: User[];
 }
 
-const ChatLayout = ({ defaultLayout = [320, 480] }: ChatLayoutProps) => {
+const ChatLayout = ({ defaultLayout = [320, 480], users }: ChatLayoutProps) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -60,7 +62,7 @@ const ChatLayout = ({ defaultLayout = [320, 480] }: ChatLayoutProps) => {
           document.cookie = `react-resizeable-panels:collapsed = false`;
         }}
       >
-        <Sidebar isCollapsed={isCollapsed} />
+        <Sidebar isCollapsed={isCollapsed} users={users} />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>

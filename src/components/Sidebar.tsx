@@ -5,7 +5,7 @@ import { AvatarImage } from "@radix-ui/react-avatar";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { LogOut } from "lucide-react";
 import useSound from "use-sound";
-import { USERS } from "../db/dummy";
+import { User, USERS } from "../db/dummy";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
@@ -13,9 +13,10 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 interface SidebarProps {
   isCollapsed: boolean;
+  users: User[];
 }
 
-const Sidebar = ({ isCollapsed }: SidebarProps) => {
+const Sidebar = ({ isCollapsed, users }: SidebarProps) => {
   const selectedUser = USERS[0];
   const [playClickSound] = useSound("/sounds/mouse-click.mp3");
   const { soundEnabled } = usePreferences();
@@ -30,7 +31,7 @@ const Sidebar = ({ isCollapsed }: SidebarProps) => {
         </div>
       )}
       <ScrollArea className="gap-2 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
-        {USERS.map((user, idx) =>
+        {users.map((user, idx) =>
           isCollapsed ? (
             <TooltipProvider key={idx}>
               <Tooltip delayDuration={0}>
