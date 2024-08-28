@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { usePreferences } from "@/store/usePreferences";
 import { useSelectedUser } from "@/store/useSelectedUser";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
@@ -21,6 +22,7 @@ const Sidebar = ({ isCollapsed, users }: SidebarProps) => {
   const [playClickSound] = useSound("/sounds/mouse-click.mp3");
   const { soundEnabled } = usePreferences();
   const { setSelectedUser, selectedUser } = useSelectedUser();
+  const { user } = useKindeBrowserClient();
 
   return (
     <div className="group realtive flex flex-col h-full gap-4 p-2 data-[collapsed=true]:p-2 max-h-full overflow-auto bg-background">
@@ -103,13 +105,13 @@ const Sidebar = ({ isCollapsed, users }: SidebarProps) => {
             <div className="hidden md:flex gap-2 items-center ">
               <Avatar className="flex justify-center items-center">
                 <AvatarImage
-                  src={"/user-placeholder.png"}
+                  src={user?.picture || "/user-placeholder.png"}
                   alt="avatar"
                   referrerPolicy="no-referrer"
                   className="w-8 h-8 border-2 border-white rounded-full"
                 />
               </Avatar>
-              <p className="font-bold">{"John Doe"}</p>
+              <p className="font-bold">{user?.given_name}</p>
             </div>
           )}
           <div className="flex">
