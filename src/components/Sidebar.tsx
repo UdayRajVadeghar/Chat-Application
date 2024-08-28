@@ -1,11 +1,12 @@
 import { cn } from "@/lib/utils";
 import { usePreferences } from "@/store/usePreferences";
+import { useSelectedUser } from "@/store/useSelectedUser";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { LogOut } from "lucide-react";
 import useSound from "use-sound";
-import { User, USERS } from "../db/dummy";
+import { User } from "../db/dummy";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
@@ -17,9 +18,9 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ isCollapsed, users }: SidebarProps) => {
-  const selectedUser = USERS[0];
   const [playClickSound] = useSound("/sounds/mouse-click.mp3");
   const { soundEnabled } = usePreferences();
+  const { setSelectedUser, selectedUser } = useSelectedUser();
 
   return (
     <div className="group realtive flex flex-col h-full gap-4 p-2 data-[collapsed=true]:p-2 max-h-full overflow-auto bg-background">
@@ -39,6 +40,7 @@ const Sidebar = ({ isCollapsed, users }: SidebarProps) => {
                   <div
                     onClick={() => {
                       soundEnabled && playClickSound();
+                      setSelectedUser(user);
                     }}
                   >
                     <Avatar className="my-1 flex justify-center items-center">
@@ -74,6 +76,7 @@ const Sidebar = ({ isCollapsed, users }: SidebarProps) => {
               )}
               onClick={() => {
                 soundEnabled && playClickSound();
+                setSelectedUser(user);
               }}
             >
               <Avatar className="flex justify-center items-center">

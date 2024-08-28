@@ -3,7 +3,7 @@ import { InfoIcon, X } from "lucide-react";
 import { Avatar, AvatarImage } from "../ui/avatar";
 
 const ChatTopBar = () => {
-  const { selectedUser } = useSelectedUser();
+  const { selectedUser, setSelectedUser } = useSelectedUser();
 
   return (
     <div className="w-full h-20 flex p-4 justify-between items-center border-b ">
@@ -20,7 +20,10 @@ const ChatTopBar = () => {
       </div>
       <div className="flex gap-2 ">
         <InfoIcon className="text-muted-foreground cursor-pointer hover:text-primary" />
-        <X className="text-muted-foreground cursor-pointer hover:text-primary" />
+        <X
+          className="text-muted-foreground cursor-pointer hover:text-primary"
+          onClick={() => setSelectedUser(null)}
+        />
       </div>
     </div>
   );
