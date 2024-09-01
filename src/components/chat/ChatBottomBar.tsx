@@ -50,6 +50,12 @@ const ChatBottomBar = () => {
     textAreaRef.current?.focus();
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter") {
+      handleSendMessage();
+    }
+  };
+
   return (
     <div className="p-2 flex justify-between w-full items-center gap-2">
       {!message.trim() && (
@@ -80,6 +86,7 @@ const ChatBottomBar = () => {
               setMessage(e.target.value);
               playRandomKeyStrokeSound();
             }}
+            onKeyDown={handleKeyDown}
           />
           <div className="absolute right-2 bottom-0.5 ">
             <EmojiPicker
