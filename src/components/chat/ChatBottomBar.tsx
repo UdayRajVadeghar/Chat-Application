@@ -52,7 +52,13 @@ const ChatBottomBar = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
+      e.preventDefault();
       handleSendMessage();
+    }
+
+    if (e.key === "Enter" && e.shiftKey) {
+      e.preventDefault();
+      setMessage(message + "\n");
     }
   };
 
@@ -115,7 +121,17 @@ const ChatBottomBar = () => {
             size={"icon"}
           >
             {!isPending && (
-              <ThumbsUp size={20} className="text-muted-foreground" />
+              <ThumbsUp
+                size={20}
+                className="text-muted-foreground"
+                onClick={() => {
+                  sendMessage({
+                    content: "👍",
+                    messageType: "text",
+                    receiverId: selectedUser?.id!,
+                  });
+                }}
+              />
             )}
             {isPending && <Loader size={20} className="animate-spin" />}
           </Button>
