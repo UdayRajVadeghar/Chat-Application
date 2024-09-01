@@ -1,9 +1,12 @@
+import { sendMessageAction } from "@/actions/message.actions";
 import { usePreferences } from "@/store/usePreferences";
+import { useSelectedUser } from "@/store/useSelectedUser";
+import { useMutation } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Image as ImageIcon,
   Loader,
-  SendHorizonalIcon,
+  SendHorizonal,
   ThumbsUp,
 } from "lucide-react";
 import { useRef, useState } from "react";
@@ -15,18 +18,36 @@ import EmojiPicker from "./EmojiPicker";
 const ChatBottomBar = () => {
   const [message, setMessage] = useState("");
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const isPending = false;
+
   const { soundEnabled } = usePreferences();
   const [playSound1] = useSound("/sounds/Keystroke1.mp3");
   const [playSound2] = useSound("/sounds/Keystroke2.mp3");
   const [playSound3] = useSound("/sounds/Keystroke3.mp3");
   const [playSound4] = useSound("/sounds/Keystroke4.mp3");
 
+  const { selectedUser } = useSelectedUser();
+
   const playSoundFunctions = [playSound1, playSound2, playSound3, playSound4];
 
   const playRandomKeyStrokeSound = () => {
     const randomIndex = Math.floor(Math.random() * playSoundFunctions.length);
     soundEnabled && playSoundFunctions[randomIndex]();
+  };
+
+  const { mutate: sendMessage, isPending } = useMutation({
+    mutationFn: sendMessageAction,
+  });
+
+  const handleSendMessage = () => {
+    if (!message.trim()) return;
+    sendMessage({
+      content: message.trim(),
+      messageType: "text",
+      receiverId: selectedUser?.id!,
+    });
+    setMessage("");
+
+    textAreaRef.current?.focus();
   };
 
   return (
@@ -76,8 +97,9 @@ const ChatBottomBar = () => {
             className="h-9 w-9 dark:bg-muted dark:text-muted-foreground dark:hover:bg:muted dark:hover:text-white shrink-0"
             variant={"ghost"}
             size={"icon"}
+            onClick={handleSendMessage}
           >
-            <SendHorizonalIcon size={20} className="text-muted-foreground" />
+            <SendHorizonal size={20} className="text-muted-foreground" />
           </Button>
         ) : (
           <Button
